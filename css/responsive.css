@@ -1,0 +1,51 @@
+
+.header__menu{
+  display:none;
+}
+
+@media screen and (max-width: 900px) {
+
+  .header__title {
+    margin-left: 0;
+    font-size: 2em;
+    vertical-align: bottom;
+  }
+  .sidebar {
+    z-index: 10;
+    background-color: #fff;
+    width: 300px;
+    position: absolute;
+    /* This trasform moves the drawer off canvas. */
+    -webkit-transform: translate(-400px, 0);
+    transform: translate(-400px, 0);
+    /* Optionally, we animate the drawer. */
+    transition: transform 0.3s ease;
+  }
+  .sidebar.open {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+  }
+  .header__menu {
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    padding: 1em;
+  }
+  .header__menu svg {
+    width: 48px;
+    fill: #E0E0E0;
+  }
+  #mapview{
+    margin-left: 0;
+    height:100%;
+    position:relative;
+    width:100%;
+    right:0px;
+    padding-left: 0px;
+    bottom:0px;
+  }
+  #header{
+    text-align: center;
+    max-width:75%;
+  }
+}
