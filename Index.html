@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neighbourhood Maps Project</title>
-    <link href='css/style.css' type='text/css' rel='stylesheet'>
-    <link href='css/responsive.css' type='text/css' rel='stylesheet'>
+    <link href='css/style.css' rel='stylesheet'>
+    <link href='css/responsive.css' rel='stylesheet'>
   </head>
 
   <body>
@@ -21,8 +21,8 @@
     <div class='container'>
 
     <div class="sidebar">
-      <label id='label_text'> Select Location </label>
-      <select id="search" data-bind="options:locList, optionsText: `title`, value:clickedLoc, event:{change: setLocation}">
+      <label id='label_text'> Locale Filter </label>
+      <select id="search" data-bind="options:categoryList, optionsCaption:'Choose category to filter', value:clickedLoc, event:{change: setLocation}">
         <!--<option data-bind='text:title, click:$parent.setLocation'>-->
         <!--<option data-bind='text:title, select:function(){console.log('Item selected');}'</option>-->
       </select>
@@ -38,9 +38,10 @@
 
   </div>
 
+  <script async defer src='https://maps.googleapis.com/maps/api/js?libraries=places,geometry,drawing&key=AIzaSyCWQrf1VregoWEw-LvCFxyNnBjwW2mKcTk&callback=initMap' onerror="googleError()"></script>
+  <script async src='js/jquery.min.js'></script>
   <script src='js/knockout-3.4.0.js'></script>
   <script src='js/app.js'></script>
-  <script async defer src='https://maps.googleapis.com/maps/api/js?libraries=places,geometry,drawing&key=AIzaSyCWQrf1VregoWEw-LvCFxyNnBjwW2mKcTk&callback=initMap'></script>
   <script type="text/javascript">
     /*
      * Open the drawer when the menu ison is clicked.
@@ -78,14 +79,14 @@
         this.setIcon(highlightedIcon);
         populateInfoWindow(this, largeInfowindow);
       });
-      clearTimeout(setTimeout);
+      //clearTimeout(setTimeout);
       }
 
-      setTimeout(function() {
+      googleError= function() {
       if(!window.google || !window.google.maps) {
         window.alert('Google Maps has not loaded. Refresh the Page or Check your internet connection.');
       }
-      }, 5000);
+    }
 
     populateInfoWindow = function(marker, infowindow){
         if (infowindow.marker != marker) {
@@ -112,10 +113,10 @@
               //console.log(articleList);
               if(articleList==""){
             //    articleList="No Wiki on "+marker.title;
-                infowindow.setContent('<div>' + marker.title + '</div><div>' + 'No Wiki Content for this Place'+'</div>'+'<div><img src='+marker.image+'height="150" width="150"'+'></div>')
+                infowindow.setContent('<div>' + marker.title + '</div><div>' + 'No Wiki Content for this Place'+'</div>'+'<div><img src='+marker.image+' height="150" width="150"'+'></div>')
               }
               else{
-                infowindow.setContent('<div>' + marker.title + '</div><div>' + '<li><a href ="'+articleList+'"target="_blank"">'+articleStr+'</a></li></div>'+'<div><img src='+marker.image+'height="150" width="150"'+'></div>');
+                infowindow.setContent('<div>' + marker.title + '</div><div>' + '<li><a href ="'+articleList+'"target="_blank"">'+articleStr+'</a></li></div>'+'<div><img src='+marker.image+' height="150" width="150"'+'></div>');
               }
             //  for (var i=0;i<articleList.length;i++){
 
@@ -146,8 +147,9 @@
     }
 // Function to show map markers on the map
     function showListings() {
+      //markers=[];
       hideListings();
-      //console.log(markers);
+      //console.log(markers.length);
       defaultIcon = makeMarkerIcon('0091ff');
       highlightedIcon = makeMarkerIcon('FFFF24');
       //console.log(vm.currentLoc().length);
@@ -165,7 +167,7 @@
             image:images
             });
             markers.push(marker);
-      //console.log(markers);
+    
       var bounds = new google.maps.LatLngBounds();
       marker.setMap(map);
       // Extend the boundaries of the map for each marker and display the marker
@@ -175,7 +177,10 @@
       //}
       //map.fitBounds(bounds);
       marker.addListener('click',function(){
-          this.setIcon(highlightedIcon);
+        for(var i=0;i<markers.length;i++){
+              markers[i].setIcon(defaultIcon);
+            };
+              this.setIcon(highlightedIcon);
           populateInfoWindow(this, largeInfowindow);
         });
     }
@@ -187,8 +192,13 @@
     }
     markers=[];
   }
+
 // Function to click map markers from list
   function listClick(){
+
+    defaultIcon = makeMarkerIcon('0091ff');
+    highlightedIcon = makeMarkerIcon('FFFF24');
+
     marker = new google.maps.Marker({
     position:vm.chosenLoc().location(),
     map:map,
@@ -197,12 +207,18 @@
     icon:defaultIcon,
     image:images
     });
-    markers.push(marker);
+
+    for(var i=0;i<markers.length;i++){
+          markers[i].setIcon(defaultIcon);
+        };
     marker.setIcon(highlightedIcon);
+    markers.push(marker);
+
     populateInfoWindow(marker, largeInfowindow);
+
   }
 
   </script>
-<script src="js/jquery.min.js"></script>
+
   </body>
 </html>

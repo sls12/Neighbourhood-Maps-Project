@@ -4,7 +4,8 @@
     - Index.html
     - css folder: style.css & responsive.css
     - js folder: app.js, jquery.min.js & knockout-3.4.0.js
-    - Of course READMe.md file
+    - READMe.md
+    - img folder : with images for the Project
 
 
 ###Steps to run
