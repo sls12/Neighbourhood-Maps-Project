@@ -60,18 +60,29 @@ var ViewModel=function(){
   this.setLocation=function(clickedLocation,item){
     //console.log(self.clickedLoc());
       self.currentLoc([]);
+      //markers=[];
       if(!self.clickedLoc()){
+
         self.currentLoc(self.locList());
+        for(var i=0;i<markers.length;i++){
+              markers[i].setVisible(true);
+              markers[i].setIcon(defaultIcon);
+            };
       }
       else{
-        for(var i=0;i<self.locList().length;i++){
-          if(self.locList()[i].type()=== self.clickedLoc()){
+          for(var i=0;i<markers.length;i++){
+              markers[i].setVisible(false);
+            };
+
+          for(var i=0;i<self.locList().length;i++){
+            if(self.locList()[i].type()=== self.clickedLoc()){
             self.currentLoc.push(self.locList()[i]);
+            markers[i].setVisible(true);
+            markers[i].setIcon(defaultIcon);
+
           }
         }
       }
-      //console.log(self.currentLoc());
-      showListings();
     };
 
   this.chosenL=function(chosenLocation){
